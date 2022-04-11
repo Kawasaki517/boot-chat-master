@@ -1,6 +1,7 @@
 package cn.tycoding.service.impl;
 
 import cn.tycoding.constant.CommonConstant;
+import cn.tycoding.controller.WebsocketServerEndpoint;
 import cn.tycoding.entity.Message;
 import cn.tycoding.entity.User;
 import cn.tycoding.service.ChatSessionService;
@@ -14,6 +15,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpSession;
 import java.io.File;
+import java.io.IOException;
 import java.nio.file.Paths;
 import java.text.ParseException;
 import java.util.ArrayList;
@@ -129,6 +131,7 @@ public class ChatSessionServiceImpl implements ChatSessionService {
 
     @Override
     public void Upload(String formId, String toId, MultipartFile file, String messageBody,HttpSession session) {
+        WebsocketServerEndpoint websocketServerEndpoint=new WebsocketServerEndpoint();
         JSONObject jsonObject = JSONObject.parseObject(messageBody);
         Message messages = JSON.toJavaObject(jsonObject, Message.class);
         File cache = new File("session-chat/src/main/resources/Cache/" + formId + "/" + toId);
@@ -138,13 +141,20 @@ public class ChatSessionServiceImpl implements ChatSessionService {
         try {
             file.transferTo(Paths.get(cache.getPath() + "/" + file.getOriginalFilename()));
             messages.setUrl("/Cache/"+formId+"/"+toId+"/"+file.getOriginalFilename());
+            messages.setMessage(file.getOriginalFilename());
         } catch (Exception e) {
             log.info("解析文件出错");
         }
         if (Integer.parseInt(toId)==0){
-            pushMessage(formId,null,messages,session);
+            try {
+                websocketServerEndpoint.onMessage(JSON.toJSONString(messages));
+                log.info(JSON.toJSONString(messages));
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }else {
-            pushMessage(formId,toId,messages,session);
+            websocketServerEndpoint.sendTo(toId,messages,session);
+
         }
 
     }

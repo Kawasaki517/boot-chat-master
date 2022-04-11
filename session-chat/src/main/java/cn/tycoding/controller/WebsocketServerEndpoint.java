@@ -30,7 +30,7 @@ import java.util.concurrent.CopyOnWriteArraySet;
 @Component
 @ServerEndpoint(value = "/chat/{id}", configurator = HttpSessionConfig.class)
 public class WebsocketServerEndpoint {
-    private HttpSession httpSession;
+    private static HttpSession httpSession;
 
     private static ChatSessionService chatSessionService;
 
