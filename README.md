@@ -9,19 +9,7 @@
   <img src="https://img.shields.io/badge/ElementUI-2.7.0-blue.svg" alt="Coverage Status">
  </p>
 
-**线上地址**
 
-[Chat](http://39.105.46.235:8087/)
-
-**注意！注意！注意！**
-
-当前版本中，使用HTTPSession储存的WebSocket会话消息（包括登录用户信息），因此就不可避免的会遇到Session不能被共享导致的数据丢失。
-
-因此，在我部署的线上地址上可能出现数据丢失。如果是测试学习，请使用同一个浏览器换用不同用户登录，这不会产生上述问题了。
-
-SO，后续我会使用Redis储存WebSocket的会话消息（当前版本的优点就是开箱即用，只需要JDK环境即可运行项目打包jar）。
-
-正在开发中，欢迎star、fork关注哦~~
 
 ## 介绍
 
@@ -128,13 +116,6 @@ Access http://localhost:8080 using Chrome
 如果此项目对你的学习有些帮助，你或许可以请作者喝一杯果汁以表示鼓励
 
 ![](doc/wechat.png)
-
-## 关于我
-
-[传送门](https://www.tycoding.cn/about/)
-
-个人Java交流群：671017003
-
 
 ## 预览
 
